@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sandikala — Sandi dalam Setiap Kala</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Marcellus&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+  <div class="bg-glow"></div>
+  <div class="bg-runes" aria-hidden="true">
+    <span>✦</span><span>✧</span><span>◆</span><span>✦</span><span>◇</span><span>✧</span>
+  </div>
+
+  <header class="site-header">
+    <div class="brand">
+      <span class="brand-glyph">◆</span>
+      <div class="brand-text">
+        <h1>Sandikala</h1>
+        <p class="tagline">Sandi yang bersembunyi di setiap kala</p>
+      </div>
+    </div>
+    <p class="subtitle">Steganografi LSB + Enkripsi AES-256-GCM — Tugas Proyek Keamanan Informasi</p>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab-btn active" data-tab="embed">✦ Sandikan Pesan</button>
+    <button class="tab-btn" data-tab="extract">✦ Ungkap Pesan</button>
+    <button class="tab-btn" data-tab="analyze">✦ Telisik Visual</button>
+    <span class="tab-indicator"></span>
+  </nav>
+
+  <main>
+    <!-- ===================== EMBED ===================== -->
+    <section id="embed" class="tab-panel active">
+      <h2><span class="rune">◆</span> Sandikan Pesan ke dalam Citra</h2>
+      <p class="section-lead">Sembunyikan kata-kata Anda di balik piksel — hanya yang memegang kunci yang dapat mengungkapnya kembali.</p>
+      <form id="embedForm">
+        <label>Citra Cover (PNG/BMP)
+          <input type="file" name="cover" id="coverFile" accept="image/png,image/bmp" required />
+        </label>
+        <p id="capacityInfo" class="hint"></p>
+
+        <label>Pesan Rahasia
+          <textarea name="message" rows="4" required placeholder="Tulis pesan di sini..."></textarea>
+        </label>
+
+        <label>Kata Sandi Enkripsi (AES-256-GCM)
+          <input type="password" name="password" required />
+        </label>
+
+        <label>Stego-Key (menentukan posisi acak penyisipan pixel)
+          <input type="text" name="stego_key" required />
+        </label>
+
+        <button type="submit"><span class="btn-label">Sandikan &amp; Hasilkan Citra</span><span class="btn-spinner" hidden></span></button>
+      </form>
+
+      <div id="embedResult" class="result hidden">
+        <div class="side-by-side">
+          <div><h3>Cover</h3><img id="coverPreview" /></div>
+          <div><h3>Stego</h3><img id="stegoPreview" /></div>
+        </div>
+        <p id="embedStats"></p>
+        <a id="downloadStego" download="sandikala-stego.png">⬇ Unduh Citra Bersandi</a>
+      </div>
+      <p id="embedError" class="error"></p>
+    </section>
+
+    <!-- ===================== EXTRACT ===================== -->
+    <section id="extract" class="tab-panel">
+      <h2><span class="rune">◆</span> Ungkap Pesan dari Citra</h2>
+      <p class="section-lead">Masukkan kunci yang benar untuk membuka kembali sandi yang tersembunyi di kala silam.</p>
+      <form id="extractForm">
+        <label>Citra Stego (PNG)
+          <input type="file" name="stego" accept="image/png" required />
+        </label>
+        <label>Kata Sandi
+          <input type="password" name="password" required />
+        </label>
+        <label>Stego-Key
+          <input type="text" name="stego_key" required />
+        </label>
+        <button type="submit"><span class="btn-label">Ungkap Pesan</span><span class="btn-spinner" hidden></span></button>
+      </form>
+      <div id="extractResult" class="result hidden">
+        <h3>Pesan Hasil Ekstraksi</h3>
+        <pre id="extractedMessage"></pre>
+      </div>
+      <p id="extractError" class="error"></p>
+    </section>
+
+    <!-- ===================== ANALYZE ===================== -->
+    <section id="analyze" class="tab-panel">
+      <h2><span class="rune">◆</span> Telisik Bidang LSB</h2>
+      <p class="section-lead">Lihat jejak tersembunyi yang tertinggal di balik bit-bit paling halus pada citra.</p>
+      <form id="analyzeForm">
+        <label>Unggah Citra (cover ATAU stego)
+          <input type="file" name="image" accept="image/*" required />
+        </label>
+        <button type="submit"><span class="btn-label">Tampilkan Bidang LSB</span><span class="btn-spinner" hidden></span></button>
+      </form>
+      <div id="analyzeResult" class="result hidden">
+        <img id="lsbPlanePreview" />
+        <p class="hint">Pola acak pada bidang LSB biasanya menandakan penyisipan pesan. Bandingkan citra cover vs stego untuk melihat perbedaannya.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p><span class="rune">✦</span> Untuk metrik kuantitatif (PSNR, MSE, histogram, chi-square, uji JPEG) jalankan skrip di folder <code>testing/</code>. Lihat README.md.</p>
+  </footer>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
