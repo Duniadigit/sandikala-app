@@ -1,0 +1,6 @@
+Flask
+Pillow
+cryptography
+numpy
+matplotlib==3.9.2
+pytest==8.3.3
